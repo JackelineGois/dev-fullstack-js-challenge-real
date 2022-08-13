@@ -6,78 +6,84 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Student List</title>
+        <link rel="stylesheet" href="css/studentsList.css">
     </head>
 
     <body>
-        <nav>
+        <nav class="main-nav">
             <header>
                 Módulo Acadêmico
             </header>
-            <ul>
-                <li> <a href="#"> Alunos </a></li>
+            <ul class="nav-links">
+                <a class="nav-item" href="#">
+                    <li> Alunos </li>
+                </a>
             </ul>
         </nav>
-        <section>
-            <header>
+        <section class="container">
+            <header class="main-header">
                 Consulta De Alunos
             </header>
             <div class="content-page">
-                <form action="">
-                    <input type="text" name="searchInput" id="searchInput">
-                    <button> Pesquisar </button>
-                </form>
-                <button>
-                    Cadastrar aluno
-                </button>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Registro Acadêmico</th>
-                            <th>Nome </th>
-                            <th>CPF</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1939</td>
-                            <td>Aluno Um</td>
-                            <td> 000.000.000-56</td>
-                            <td>
-                                <a href="#"> Editar</a>
-                                <a href="#"> Excluir</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1990</td>
-                            <td>Aluno Dois</td>
-                            <td> 100.000.000-56</td>
-                            <td>
-                                <a href="#"> Editar</a>
-                                <a href="#"> Editar</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1993</td>
-                            <td>Aluno Três</td>
-                            <td> 200.000.000-56</td>
-                            <td>
-                                <a href="#"> Editar</a>
-                                <a href="#"> Editar</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1997</td>
-                            <td>Aluno Quatro</td>
-                            <td> 400.000.000-56</td>
-                            <td>
-                                <a href="#"> Editar</a>
-                                <a href="#"> Editar</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
+                <div class="padding-left-right-20">
+                    <div class="top-actions">
+                        <form class="form-search" action="">
+                            <input type="text" name="searchInput" id="searchInput">
+                            <button> Pesquisar </button>
+                        </form>
+                        <button>
+                            Cadastrar aluno
+                        </button>
+                    </div>
+                    <table class="table-list">
+                        <thead>
+                            <tr>
+                                <th>Registro Acadêmico</th>
+                                <th>Nome </th>
+                                <th>CPF</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1939</td>
+                                <td>Aluno Um</td>
+                                <td> 000.000.000-56</td>
+                                <td>
+                                    <a href="#"> Editar</a>
+                                    <a href="#"> Excluir</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1990</td>
+                                <td>Aluno Dois</td>
+                                <td> 100.000.000-56</td>
+                                <td>
+                                    <a href="#"> Editar</a>
+                                    <a href="#"> Editar</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1993</td>
+                                <td>Aluno Três</td>
+                                <td> 200.000.000-56</td>
+                                <td>
+                                    <a href="#"> Editar</a>
+                                    <a href="#"> Editar</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1997</td>
+                                <td>Aluno Quatro</td>
+                                <td> 400.000.000-56</td>
+                                <td>
+                                    <a href="#"> Editar</a>
+                                    <a href="#"> Editar</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
