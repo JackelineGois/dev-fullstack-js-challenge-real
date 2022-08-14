@@ -1,26 +1,26 @@
 module.exports = [
   {
-    nome: "Jonathan Melo",
+    nome: "Jackeline ",
     email: "desenvolvedor.jonathan@gmail.com",
     cpf: "988978768978",
     ra: "89789978",
   },
   {
-    nome: "Jonathan Melo",
+    nome: "Jonathan ",
     email: "desenvolvedor.jonathan@gmail.com",
-    cpf: "988978768978",
-    ra: "84232423",
+    cpf: "3298783",
+    ra: "842",
   },
   {
-    nome: "Jonathan Melo",
+    nome: "Alexander Júnior",
     email: "desenvolvedor.jonathan@gmail.com",
-    cpf: "988978768978",
-    ra: "8214322",
+    cpf: "98878",
+    ra: "8323",
   },
   {
-    nome: "Jonathan Melo",
+    nome: "Júlia ",
     email: "desenvolvedor.jonathan@gmail.com",
-    cpf: "988978768978",
-    ra: "89789978",
+    cpf: "989789",
+    ra: "873868",
   },
 ];
