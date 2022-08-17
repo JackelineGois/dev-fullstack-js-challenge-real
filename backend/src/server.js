@@ -1,6 +1,6 @@
 const express = require("express");
 var cors = require("cors");
-const database = require("./database");
+let database = require("./database");
 
 const app = express();
 app.use(cors());
@@ -22,6 +22,16 @@ app.get("/students/find/:ra", function (req, res) {
   setTimeout(function () {
     res.send(studentFound);
   }, 2000);
+});
+
+app.delete("/students/delete/:ra", (req, res) => {
+  database = database.filter(function (student) {
+    return student.ra != req.params.ra;
+  });
+  res.send({
+    result: true,
+    message: ` O estudante #${req.params.ra} foi excluido com sucesso!`,
+  });
 });
 
 app.listen(3000);
