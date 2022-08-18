@@ -1,8 +1,6 @@
 $(document).ready(function () {
-  const urlSearch = new URLSearchParams(window.location.search);
-  const ra = urlSearch.get("ra");
-  if (ra) {
-    fetchStudent(ra);
+  if (isEditingModel()) {
+    fetchStudent();
   } else {
     $(".loader").hide();
     $(".content-page").show();
@@ -17,8 +15,22 @@ $(document).ready(function () {
       email: event.target.email.value,
     };
 
-    fetch("http://localhost:3000/students/save", {
-      method: "POST",
+    /* o fetch ele manda uma requisicão para a API para algum  dos endpoints(endereços da url) que nos criamos no server.js */
+    /* Get ação de pegar, o post ação de criar, put ação de editar, delete ação de excluir  */
+
+    let methodEndPoint;
+    let urlEndpoint;
+
+    if (isEditingModel()) {
+      methodEndPoint = "PUT";
+      urlEndpoint = `http://localhost:3000/students/edit/${getRAFromUrl}`;
+    } else {
+      methodEndPoint = "POST";
+      urlEndpoint = "http://localhost:3000/students/save";
+    }
+
+    fetch(urlEndpoint, {
+      method: methodEndPoint,
       body: JSON.stringify(body),
       headers: {
         Accept: "application/json",
@@ -36,8 +48,8 @@ $(document).ready(function () {
   });
 });
 
-function fetchStudent(ra) {
-  fetch(`http://localhost:3000/students/find/${ra}`)
+function fetchStudent() {
+  fetch(`http://localhost:3000/students/find/${getRAFromUrl()}`)
     .then(function (response) {
       return response.json();
     })
@@ -50,7 +62,15 @@ function fetchStudent(ra) {
 
       $(".loader").hide("fast");
       $(".content-page").show("slow");
-
-      console.log(data);
     });
+}
+
+function isEditingModel() {
+  const urlSearch = new URLSearchParams(window.location.search);
+  return urlSearch.has("ra");
+}
+
+function getRAFromUrl() {
+  const urlSearch = new URLSearchParams(window.location.search);
+  return urlSearch.get("ra");
 }

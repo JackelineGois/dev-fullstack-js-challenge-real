@@ -48,5 +48,22 @@ app.delete("/students/delete/:ra", (req, res) => {
   });
 });
 
+app.put("/students/edit/:ra", (req, res) => {
+  database = database.filter(function (student) {
+    return student.ra != req.body.ra;
+  });
+
+  database.push({
+    nome: req.body.name,
+    ra: req.body.ra,
+    email: req.body.email,
+    cpf: req.body.cpf,
+  });
+  res.send({
+    result: true,
+    message: "Usúario editado com sucesso!",
+  });
+});
+
 app.listen(3000);
 console.log("Server is running");
