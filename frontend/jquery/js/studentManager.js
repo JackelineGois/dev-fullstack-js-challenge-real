@@ -1,5 +1,6 @@
 $(document).ready(function () {
   if (isEditingModel()) {
+    setReadOnlyFields();
     fetchStudent();
   } else {
     $(".loader").hide();
@@ -47,6 +48,13 @@ $(document).ready(function () {
       });
   });
 });
+
+/* função abaixo criada para não deixar o ra e o cpf editavél */ 
+function setReadOnlyFields() {
+  const studentForm = $("#studentForm");
+  studentForm.find("#ra").attr("readonly", true);
+  studentForm.find("#cpf").attr("readonly", true);
+}
 
 function fetchStudent() {
   fetch(`http://localhost:3000/students/find/${getRAFromUrl()}`)
