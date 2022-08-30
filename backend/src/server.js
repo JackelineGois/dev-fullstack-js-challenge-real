@@ -37,19 +37,14 @@ app.get("/students/list/:searchQuery?", function (req, res) {
 });
 
 app.get("/students/find/:ra", function (req, res) {
-  const studentFound = database.find(function (student) {
-    return student.ra == req.params.ra;
-  });
   return app
     .database("students")
     .select()
     .where({ ra: req.params.ra })
     .first()
     .then((response) => {
-      res.send({ response });
+      res.send(response);
     });
-
-  res.send(studentFound);
 });
 
 app.post("/students/save", async (req, res) => {
@@ -149,6 +144,45 @@ app.delete("/students/delete/:ra", (req, res) => {
 });
 
 app.put("/students/edit/:ra", async (req, res) => {
+  const userFound = await app
+
+    .database("students")
+    .select()
+    .where({ ra: req.params.ra })
+    .first()
+
+     if (!userFound) {
+       return res.status(400).send({
+         result: false,
+         message: "O estudante informado não existe",
+       });
+        }
+        const studentUpdate = await app
+          .database("students")
+          .update({
+            email: req.body.email,
+            nome: req.body.name,
+          })
+          .where({
+            ra: req.params.ra,
+          })
+            if (studentUpdate) {
+              res.send({
+                result: true,
+                message: "Usúario editado com sucesso!",
+              });
+            } else {
+              res.status(500).send({
+                result: false,
+                message: "Desculpe, mas não conseguimos atualizar o estudante",
+              });
+            }
+
+    });
+
+
+  /* abaixo é o metodo de fazer update sem usar banco de dados 
+
   if (req.body.name == "") {
     return res.status(400).send({
       result: false,
@@ -189,7 +223,8 @@ app.put("/students/edit/:ra", async (req, res) => {
       message: "Usúario editado com sucesso!",
     });
   }
-});
+  */
+
 
 app.listen(3000);
 console.log("Server is running");

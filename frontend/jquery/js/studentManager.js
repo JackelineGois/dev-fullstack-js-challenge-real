@@ -24,7 +24,7 @@ $(document).ready(function () {
 
     if (isEditingModel()) {
       methodEndPoint = "PUT";
-      urlEndpoint = `http://localhost:3000/students/edit/${getRAFromUrl}`;
+      urlEndpoint = `http://localhost:3000/students/edit/${getRAFromUrl()}`;
     } else {
       methodEndPoint = "POST";
       urlEndpoint = "http://localhost:3000/students/save";
@@ -49,7 +49,7 @@ $(document).ready(function () {
   });
 });
 
-/* função abaixo criada para não deixar o ra e o cpf editavél */ 
+/* função abaixo criada para não deixar o ra e o cpf editavél */
 function setReadOnlyFields() {
   const studentForm = $("#studentForm");
   studentForm.find("#ra").attr("readonly", true);
