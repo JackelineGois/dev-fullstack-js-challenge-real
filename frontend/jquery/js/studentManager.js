@@ -43,8 +43,9 @@ $(document).ready(function () {
       })
       .then((data) => {
         alert(data.message);
-        document.location.href = "studentsList.html";
-        console.log(data);
+        if (data.result) {
+          document.location.href = "studentsList.html";
+        }
       });
   });
 });
