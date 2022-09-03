@@ -1,5 +1,5 @@
 const express = require("express");
-const StudentsController = require("./controllers/StudentController");
+const studentsRoutes = require("./routes/studentsRoutes");
 const knex = require("knex");
 var cors = require("cors");
 
@@ -11,27 +11,26 @@ const app = express();
 /* essa app abaixo é usado para conectar o banco de dados com a nossa aplicação/projeto */
 app.database = knex(knexConfigFile.test);
 
-const StudentsControllerInstance = new StudentsController(app);
-
 app.use(cors());
 app.use(express.json());
+
+app.use("/students", studentsRoutes(app));
+
 /* codigo feito pra teste do começo
 app.get("/", function (req, res) {
   res.send("Atualizando");
 });
-*/
+
+esse codigo estava aqui abaixo, mas nos transferimos ele para a pasta de studentsRoutes, para não deixar o nosso server.js poluído
+
 app.get("/students/list/:searchQuery?", StudentsControllerInstance.listAction);
-
 app.get("/students/find/:ra", StudentsControllerInstance.findAction);
-
 app.post("/students/save", (req, res) => {
   return StudentsControllerInstance.createAction(req, res);
 });
-
 app.delete("/students/delete/:ra", (req, res) => {
   return StudentsControllerInstance.deleteAction(req, res);
 });
-
 app.put("/students/edit/:ra", StudentsControllerInstance.editAction);
 
 /* abaixo é o metodo de fazer update sem usar banco de dados 

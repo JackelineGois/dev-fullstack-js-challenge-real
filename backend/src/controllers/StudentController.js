@@ -30,56 +30,47 @@ module.exports = class StudentsController {
       });
   };
 
-  createAction = async (req, res) => {
-    if (req.body.name == "") {
-      return res.status(400).send({
-        result: false,
-        message: "O nome é um campo obrigatório!",
-      });
+  isCreateDataValid = async (data) => {
+    if (data.name == "") {
+      return "O nome é um campo obrigatório!";
     }
-    if (req.body.email == "") {
-      return res.status(400).send({
-        result: false,
-        message: "O nome é um campo obrigatório!",
-      });
+    if (data.email == "") {
+      return "O email é um campo obrigatório!";
     }
-    if (req.body.ra == "") {
-      return res.status(400).send({
-        result: false,
-        message: "O nome é um campo obrigatório!",
-      });
+    if (data.ra == "") {
+      return "O RA é um campo obrigatório!";
     }
-    if (req.body.cpf == "") {
-      return res.status(400).send({
-        result: false,
-        message: "O nome é um campo obrigatório!",
-      });
+    if (data.cpf == "") {
+      return "O cpf é um campo obrigatório!";
     }
 
-    if (parseInt(req.body.ra) != req.body.ra) {
-      return res.status(400).send({
-        result: false,
-        message: "O Ra deve ser um número!",
-      });
+    if (parseInt(data.ra) != data.ra) {
+      return "O Ra deve ser um número!";
     }
-    if (parseInt(req.body.cpf) != req.body.cpf) {
-      return res.status(400).send({
-        result: false,
-        message: "O CPF deve ser um número!",
-      });
+    if (parseInt(data.cpf) != data.cpf) {
+      return "O CPF deve ser um número!";
     }
     const userExists = await this.app
       .database("students")
       .select()
       .where({
-        ra: req.body.ra,
+        ra: data.ra,
       })
       .first();
 
     if (userExists) {
+      return "Desculpe, mas já existe um estudante cadastrado com esse RA";
+    }
+
+    return true;
+  };
+
+  createAction = async (req, res) => {
+    const isCreateDataValid = await this.isCreateDataValid(req.body);
+    if (isCreateDataValid !== true) {
       return res.status(400).send({
         result: false,
-        message: "Desculpe, mas já existe um estudante cadastrado com esse RA",
+        message: isCreateDataValid,
       });
     }
 
@@ -126,39 +117,59 @@ module.exports = class StudentsController {
       });
   };
 
-  editAction = async(req, res) => { 
+  isEditDataValid = (data) => {
+    if (data.name == "") {
+      return "O nome é um campo obrigatório!";
+    }
+
+    if (data.email == "") {
+      return "O Email é um campo obrigatório!";
+    }
+
+    return true;
+  };
+
+  editAction = async (req, res) => {
+    const isEditDataValid = await this.isEditDataValid(req.body);
+    console.log(isEditDataValid);
+    if (isEditDataValid != true) {
+      return res.status(400).send({
+        result: false,
+        message: isEditDataValid,
+      });
+    }
     const userFound = await this.app
 
-    .database("students")
-    .select()
-    .where({ ra: req.params.ra })
-    .first();
+      .database("students")
+      .select()
+      .where({ ra: req.params.ra })
+      .first();
 
-  if (!userFound) {
-    return res.status(400).send({
-      result: false,
-      message: "O estudante informado não existe",
-    });
-  }
-  const studentUpdate = await this.app
-    .database("students")
-    .update({
-      email: req.body.email,
-      nome: req.body.name,
-    })
-    .where({
-      ra: req.params.ra,
-    });
-  if (studentUpdate) {
-    res.send({
-      result: true,
-      message: "Usúario editado com sucesso!",
-    });
-  } else {
-    res.status(500).send({
-      result: false,
-      message: "Desculpe, mas não conseguimos atualizar o estudante",
-    });
-  }
-  }
+    if (!userFound) {
+      return res.status(400).send({
+        result: false,
+        message: "O estudante informado não existe",
+      });
+    }
+    const studentUpdate = await this.app
+      .database("students")
+      .update({
+        email: req.body.email,
+        nome: req.body.name,
+      })
+      .where({
+        ra: req.params.ra,
+      });
+    if (studentUpdate) {
+      res.send({
+        result: true,
+        message: "Usúario editado com sucesso!",
+      });
+    } else {
+      res.status(500).send({
+        result: false,
+        message: "Desculpe, mas não conseguimos atualizar o estudante",
+      });
+    }
+  };
 };
