@@ -3,45 +3,91 @@ import "./style.css";
 
 class StudentListPage extends React.Component {
   constructor(props) {
-    console.log("constructor was called", props);
     super(props);
     this.state = {
       studentsList: [],
+      isLoading: true,
+      formSearch: {
+        searchInput: "",
+      },
     };
   }
 
+  /* */
   componentDidMount() {
-    console.log("componentDidMount was called");
     this.fetchStudentList();
   }
 
-  fetchStudentList = (searchQuery = "") => {
-    //$(".loader").show("fast");
-    //$(".content-page").hide();
+  onClickRemoveStudent = (ra) => {
+    const confirmation = window.confirm(
+      "Você realmente quer excluir esse estudante?"
+    );
+    if (confirmation) {
+      this.deleteStudent(ra);
+    }
+  };
 
-    fetch(`http://localhost:3006/students/list/${searchQuery}`)
+  deleteStudent = (ra) => {
+    this.setState({ isLoading: true });
+    fetch(`http://localhost:3006/students/delete/${ra}`, {
+      method: "DELETE",
+    })
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
-        this.setState({ studentsList: data });
-        console.log(data);
-        /* 
-      $(".loader").hide("fast");
-      $(".content-page").show("slow");
-      */
+        alert(data.message);
+        this.fetchStudentList();
+      });
+  };
+
+  onSubmitFormSearch = (event) => {
+    event.preventDefault();
+    this.fetchStudentList(event.target.searchInput.value);
+  };
+
+  fetchStudentList = (searchQuery = "") => {
+    this.setState({ isLoading: true });
+    fetch(`http://localhost:3006/students/list/${searchQuery}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+          studentsList: data,
+          isLoading: false,
+        });
       })
       .catch((error) => {
         alert("Desculpe não estamos conseguindo conectar com o servidor.");
       });
   };
   render() {
+    if (this.state.isLoading) {
+      return <div className="loader"></div>;
+    }
+
     return (
       <div className="padding-left-right-20">
         <div className="top-actions">
-          <form id="formSearchStudent" className="form-search">
-            <input type="text" name="searchInput" id="searchInput" />
+          <form
+            onSubmit={this.onSubmitFormSearch}
+            id="formSearchStudent"
+            className="form-search"
+          >
+            <input
+              type="text"
+              name="searchInput"
+              id="searchInput"
+              value={this.state.formSearch.searchInput}
+              onChange={(event) => {
+                this.setState({
+                  formSearch: {
+                    searchInput: event.target.value,
+                  },
+                });
+              }}
+            />
             <button> Pesquisar </button>
           </form>
           <a className="btn btn-dark" href="studentManager.html">
@@ -61,13 +107,19 @@ class StudentListPage extends React.Component {
           <tbody>
             {this.state.studentsList.map((student) => {
               return (
-                <tr>
+                <tr key={student.ra}>
                   <td>{student.ra} </td>
                   <td>{student.nome} </td>
                   <td>{student.cpf} </td>
                   <td>
                     <a href={`studentManager.html?ra=${student.ra}`}>Editar</a>
-                    <a class="removeStudent" data-ra={student.ra} href="/#">
+                    <a
+                      className="removeStudent"
+                      onClick={() => {
+                        this.onClickRemoveStudent(student.ra);
+                      }}
+                      href="/#"
+                    >
                       {" "}
                       Excluir
                     </a>

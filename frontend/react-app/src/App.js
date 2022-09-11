@@ -8,7 +8,6 @@ function App() {
       <Navbar />
       <section className="container">
         <header className="main-header">Consulta De Alunos</header>
-        <div className="loader"></div>
         <div className="content-page ">
           <StudentListPage />
         </div>
